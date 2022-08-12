@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome @ViewBag.iLoguari.FirstName</h1>
+</div>
+<div class="row">
+    <div class="col-sm-11"></div>
+    <div class="col-sm-1">
+        <a href="/Movie/Add">Add Movie</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tittle</th>
+                    <th>Description</th>
+                    <th>Creator</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var item in @ViewBag.movies)
+                {
+                   <tr>
+                    <td>
+                        @item.Tittle
+                    </td>
+                    <td>@item.Description</td>
+                    <td>
+                        @item.Creator.FirstName
+                    </td>
+                    <td>
+                        @if (item.Creator.UserId == @ViewBag.iLoguari.UserId)
+                        {
+                            <a href="/Movie/Delete/@item.MovieId">Delete |</a> 
+                        }  
+
+                        <a href="/Movie/BehuFans/@item.MovieId">BehuFans |</a>
+                        <a href="/Movie/Edit/@item.MovieId">Edit </a>
+
+
+                         
+
+                    </td>
+                </tr> 
+                }
+                
+            </tbody>
+        </table>
+    </div>
+</div>
