@@ -29,7 +29,8 @@ public class HomeController : Controller
         // ViewBag.zjarrte= _context.Movies.Include(e=>e.Fansat).ThenInclude(e=> e.Type).Where(e=> e.Fa).OrderBy(e => e.Fansat).Take(3).ToList(); 
         ViewBag.iLoguari = _context.Users.FirstOrDefault(e => e.UserId == id);
         ViewBag.movies = _context.Movies.Include(e => e.Creator).Include(e => e.Fansat).ThenInclude(e => e.UseriQePelqen).OrderByDescending(e => e.CreatedAt).ToList();
-        ViewBag.zarrjti = _context.Fansat.Include( e=> e.FilmiQePelqehet).ThenInclude(e =>e.Fansat).Where(e => e.Type == "iZjarrte").OrderBy(e=>e.FilmiQePelqehet.Fansat.Count).Take(3).ToList();
+
+        
         return View();
     }
 
