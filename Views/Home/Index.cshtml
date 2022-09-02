@@ -84,3 +84,84 @@
         </table>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-sm-3">
+        <table class="table">
+            <h3>Shto miq</h3>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>
+                    Actions
+                </th>
+                </tr>
+                
+            </thead>
+            <tbody>
+                @foreach (var perdorues in ViewBag.perdoruesit)
+                {
+                     <tr>
+                        <td>@perdorues.FirstName</td>
+                        <td><a href="/SendR/@perdorues.UserId">Send Request</a></td>
+                     </tr>
+                }
+               
+            </tbody>
+
+        </table>
+    </div>
+    <div class="col-sm-3">
+        <h3>kerkesat</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>
+                    Actions
+                </th>
+                </tr>
+                
+            </thead>
+            <tbody>
+                @foreach (var miqte in ViewBag.miqte)
+                {
+                     <tr>
+                        <td>@miqte.RequestId</td>
+                        <td><a href="/RemoveF/@miqte.RequestId" class="btn btn-danger">Remove</a></td>
+                       
+                     </tr>
+                }
+               
+            </tbody>
+
+        </table>
+    </div>
+    <div class="col-sm-3">
+        <h3>Miqte</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>
+                    Actions
+                </th>
+                </tr>
+                
+            </thead>
+            <tbody>
+                @foreach (var request in ViewBag.requests)
+                {
+                     <tr>
+                        <td>@request.RequestId</td>
+                        <td><a href="/AcceptR/@request.RequestId" class=" btn btn-primary">Accept </a>
+                            <a href="/DeclineR/@request.RequestId" class="btn btn-danger"> Decline </a>
+                        </td>
+                     </tr>
+                }
+               
+            </tbody>
+
+        </table>
+    </div>
+</div>

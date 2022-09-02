@@ -13,4 +13,5 @@ public class MyContext : DbContext
     public DbSet<User> Users { get; set; } 
     public DbSet<Movie> Movies { get; set; } 
     public DbSet<Fans> Fansat { get; set; } 
+    public DbSet<Request> Requests {get;set;}
 }

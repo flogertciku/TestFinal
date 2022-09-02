@@ -20,17 +20,34 @@ public class HomeController : Controller
     public IActionResult Index()
 
     {
+         // Pjesa me request
 
         if (HttpContext.Session.GetInt32("userId") == null)
         {
             return RedirectToAction("Register");
         }
         int id = (int)HttpContext.Session.GetInt32("userId");
-        // ViewBag.zjarrte= _context.Movies.Include(e=>e.Fansat).ThenInclude(e=> e.Type).Where(e=> e.Fa).OrderBy(e => e.Fansat).Take(3).ToList(); 
-        ViewBag.iLoguari = _context.Users.FirstOrDefault(e => e.UserId == id);
-        ViewBag.movies = _context.Movies.Include(e => e.Creator).Include(e => e.Fansat).ThenInclude(e => e.UseriQePelqen).OrderByDescending(e => e.CreatedAt).ToList();
 
-        
+       
+
+        //Marrim gjithe perdoruesit e tjere
+        ViewBag.perdoruesit = _context.Users.Where(e=> e.UserId != id).ToList();
+
+        //shfaqim gjith requests
+        ViewBag.requests = _context.Requests.Where(e => e.RequestId == id).Where(e=> e.Accepted == false).ToList();
+
+        // shfaq gjith miqte
+
+        ViewBag.miqte = _context.Requests.Where(e => (e.SenderId == id) || (e.ReciverId == id)).Where(e=>e.Accepted ==true).ToList();
+        //Marr te loguarin me te dhena
+        ViewBag.iLoguari = _context.Users.FirstOrDefault(e => e.UserId == id);
+
+           
+        //Mbaron ketu pjesa me request
+        ViewBag.movies = _context.Movies.Include(e => e.Creator).Include(e => e.Fansat).ThenInclude(e => e.UseriQePelqen).OrderByDescending(e => e.CreatedAt).ToList();
+       
+       
+        //Perfshi dhe return
         return View();
     }
 
@@ -74,6 +91,7 @@ public class HomeController : Controller
             _context.Users.Add(user);
             _context.SaveChanges();
             HttpContext.Session.SetInt32("userId", user.UserId);
+           
             return RedirectToAction("Index");
         }
         return View();
@@ -179,6 +197,65 @@ public class HomeController : Controller
         return RedirectToAction("index");
 
     }
+
+    // Pjesa me request
+
+
+    [HttpGet("SendR/{id}")]
+    public IActionResult SendR(int id)
+    {
+        int idFromSession = (int)HttpContext.Session.GetInt32("userId");
+        Request newRequest = new Models.Request()
+        {
+            SenderId = idFromSession,
+            ReciverId = id,
+          
+        };
+        _context.Requests.Add(newRequest);
+        _context.SaveChanges();
+        return RedirectToAction("index");
+
+    }
+    [HttpGet("AcceptR/{id}")]
+    public IActionResult AcceptR(int id)
+    {
+        
+        Request requestii = _context.Requests.First(e => e.RequestId == id);
+        requestii.Accepted=true;
+        // _context.Remove(hiqFans);
+        _context.SaveChanges();
+        return RedirectToAction("index");
+    }
+     [HttpGet("DeclineR/{id}")]
+    public IActionResult Decline(int id)
+    {
+        
+        Request requestii = _context.Requests.First(e => e.RequestId == id);
+         _context.Remove(requestii);
+        _context.SaveChanges();
+        return RedirectToAction("index");
+    }
+    [HttpGet("RemoveF/{id}")]
+    public IActionResult RemoveF(int id)
+    {
+        
+        Request requestii = _context.Requests.First(e => e.RequestId == id);
+         _context.Remove(requestii);
+        _context.SaveChanges();
+        return RedirectToAction("index");
+    }
+
+    //Perfundon Request
+
+
+
+
+
+
+
+
+
+
     [HttpGet("Movie/HiqeFans/{id}")]
     public IActionResult FansRemove(int id)
     {

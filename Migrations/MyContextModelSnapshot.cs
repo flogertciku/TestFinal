@@ -74,6 +74,34 @@ namespace TestFinal.Migrations
                     b.ToTable("Movies");
                 });
 
+            modelBuilder.Entity("TestFinal.Models.Request", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ReciverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("RequestId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Requests");
+                });
+
             modelBuilder.Entity("TestFinal.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -137,6 +165,17 @@ namespace TestFinal.Migrations
                     b.Navigation("Creator");
                 });
 
+            modelBuilder.Entity("TestFinal.Models.Request", b =>
+                {
+                    b.HasOne("TestFinal.Models.User", "Sender")
+                        .WithMany("Requests")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("TestFinal.Models.Movie", b =>
                 {
                     b.Navigation("Fansat");
@@ -147,6 +186,8 @@ namespace TestFinal.Migrations
                     b.Navigation("CreatedMovies");
 
                     b.Navigation("FilmaQePelqej");
+
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

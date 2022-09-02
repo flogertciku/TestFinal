@@ -13,4 +13,5 @@ public class Fans{
     public User? UseriQePelqen {get;set;}
     public Movie? FilmiQePelqehet {get;set;}
     
+    
 }

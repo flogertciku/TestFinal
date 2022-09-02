@@ -22,6 +22,12 @@ public class User
     public string Password { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+    public List<Request> Requests {get;set;} = new List<Request>();
+
+
+
+    
     public List<Movie> CreatedMovies { get; set; } = new List<Movie>(); 
     public List<Fans> FilmaQePelqej { get; set; } = new List<Fans>(); 
     // public List<Like> Liked { get; set; } = new List<Like>(); 

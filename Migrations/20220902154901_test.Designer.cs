@@ -11,8 +11,8 @@ using TestFinal.Models;
 namespace TestFinal.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220812113526_opa")]
-    partial class opa
+    [Migration("20220902154901_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,6 +74,34 @@ namespace TestFinal.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("TestFinal.Models.Request", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ReciverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("RequestId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Requests");
                 });
 
             modelBuilder.Entity("TestFinal.Models.User", b =>
@@ -139,6 +167,17 @@ namespace TestFinal.Migrations
                     b.Navigation("Creator");
                 });
 
+            modelBuilder.Entity("TestFinal.Models.Request", b =>
+                {
+                    b.HasOne("TestFinal.Models.User", "Sender")
+                        .WithMany("Requests")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("TestFinal.Models.Movie", b =>
                 {
                     b.Navigation("Fansat");
@@ -149,6 +188,8 @@ namespace TestFinal.Migrations
                     b.Navigation("CreatedMovies");
 
                     b.Navigation("FilmaQePelqej");
+
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }
