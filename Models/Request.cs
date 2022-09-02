@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace TestFinal.Models;
 #pragma warning disable CS8618
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,7 @@ public bool Accepted {get;set;} = false;
 public int SenderId {get;set;}
 public User? Sender {get;set;}
 public int ReciverId{get;set;}
-[NotMapped]
+
 public User? Reciver {get;set;}
 public DateTime CreatedAt { get; set; } = DateTime.Now;
 public DateTime UpdatedAt { get; set; } = DateTime.Now;

@@ -12,8 +12,8 @@
 </div>
 <div class="row">
     <div class="col-sm-11"></div>
-    
-</div>
+
+@* </div>
 <div class="row">
     <div class="col-sm-8">
         <table class="table">
@@ -32,7 +32,7 @@
                 {
                     <tr>
                         <td>
-                           <a href="/Movie/@item.MovieId">@item.Tittle</a>  
+                            <a href="/Movie/@item.MovieId">@item.Tittle</a>
                         </td>
                         <td>@item.Description</td>
                         <td>
@@ -62,28 +62,20 @@
                                 }
                                 else
                                 {
-                                    <a href="/Movie/HiqeFans/@id">hiqe Fans |</a> 
+                                    <a href="/Movie/HiqeFans/@id">hiqe Fans |</a>
                                 }
 
                             }
-                          
-                            
-
-
-
                             <a href="/Movie/Edit/@item.MovieId">Edit </a>
-
-
-                        
-
                         </td>
                     </tr>
                 }
-                
             </tbody>
         </table>
     </div>
-</div>
+</div> *@
+
+@* Request Part *@
 
 <div class="row">
     <div class="col-sm-3">
@@ -93,75 +85,77 @@
                 <tr>
                     <th>Name</th>
                     <th>
-                    Actions
-                </th>
+                        Actions
+                    </th>
                 </tr>
-                
             </thead>
             <tbody>
                 @foreach (var perdorues in ViewBag.perdoruesit)
                 {
-                     <tr>
-                        <td>@perdorues.FirstName</td>
+                    <tr>
+                        <td>@perdorues.FirstName </td>
                         <td><a href="/SendR/@perdorues.UserId">Send Request</a></td>
-                     </tr>
+                    </tr>
                 }
-               
             </tbody>
-
         </table>
     </div>
+
+    @* Friends *@
     <div class="col-sm-3">
-        <h3>kerkesat</h3>
+        <h3>Friends</h3>
         <table class="table">
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>
-                    Actions
-                </th>
+                        Actions
+                    </th>
                 </tr>
-                
             </thead>
             <tbody>
                 @foreach (var miqte in ViewBag.miqte)
                 {
-                     <tr>
-                        <td>@miqte.RequestId</td>
+                    <tr>
+                        @if (@miqte.SenderId == ViewBag.iLoguari.UserId)
+                        {
+                            <td>@miqte.Reciver.FirstName </td>
+                        }
+                        else
+                        {
+                            <td>@miqte.Sender.FirstName </td>
+                        }
                         <td><a href="/RemoveF/@miqte.RequestId" class="btn btn-danger">Remove</a></td>
-                       
-                     </tr>
+                    </tr>
                 }
-               
             </tbody>
-
         </table>
     </div>
+
+    @* Requests  *@
     <div class="col-sm-3">
-        <h3>Miqte</h3>
+        <h3>Requests</h3>
         <table class="table">
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>
-                    Actions
-                </th>
+                        Actions
+                    </th>
                 </tr>
-                
             </thead>
             <tbody>
                 @foreach (var request in ViewBag.requests)
                 {
-                     <tr>
+                    <tr>
                         <td>@request.RequestId</td>
+                        <td>@request.Sender.FirstName @request.Sender.LastName</td>
                         <td><a href="/AcceptR/@request.RequestId" class=" btn btn-primary">Accept </a>
                             <a href="/DeclineR/@request.RequestId" class="btn btn-danger"> Decline </a>
                         </td>
-                     </tr>
+                    </tr>
                 }
-               
             </tbody>
-
         </table>
     </div>
 </div>

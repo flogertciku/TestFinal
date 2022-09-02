@@ -14,4 +14,12 @@ public class MyContext : DbContext
     public DbSet<Movie> Movies { get; set; } 
     public DbSet<Fans> Fansat { get; set; } 
     public DbSet<Request> Requests {get;set;}
+     protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Request>()
+            .HasOne(p => p.Reciver)
+            
+            .WithMany(b => b.Requests)
+            ;
+    }
 }

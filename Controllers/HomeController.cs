@@ -31,18 +31,53 @@ public class HomeController : Controller
        
 
         //Marrim gjithe perdoruesit e tjere
-        ViewBag.perdoruesit = _context.Users.Where(e=> e.UserId != id).ToList();
+        List<Request> rq =  _context.Requests.Include(e=>e.Reciver).Include(e=>e.Sender).Where(e => e.ReciverId == id).Where(e => e.Accepted == false).ToList();
 
+        ViewBag.perdoruesit2 = _context.Users.Include(e=>e.Requests).Where(e=> e.UserId != id).Where(e=>(e.Requests.Any(f=> f.SenderId == id) == false) && (e.Requests.Any(f=> f.ReciverId == id) == false) ).ToList();
+        
+        
+        //List me request
+        List<User> LIST4= _context.Users.Include(e=>e.Requests).Where(e=> e.UserId != id).Where(e=>(e.Requests.Any(f=> f.SenderId == id) == false) && (e.Requests.Any(f=> f.ReciverId == id) == false) ).ToList();
+        //list me miqte
+        List<Request> miqte =_context.Requests.Where(e => (e.SenderId == id) || (e.ReciverId == id)).Include(e=>e.Reciver).Include(e=>e.Sender).Where(e=>e.Accepted ==true).ToList();
+        
+        //Filtorjme listen e gjithe userave ne menyre qe miqte dhe ata qe u kemi nisur ose na kane nisur request te mos dalin tek users e tjere.
+        for (int i = 0; i < LIST4.Count; i++)
+        {
+            var test22= LIST4[i].Requests.Except(rq);
+            
+            for (int j = 0; j < rq.Count; j++)
+            {
+                if (rq[j].SenderId == LIST4[i].UserId || rq[j].ReciverId == LIST4[i].UserId )
+            {
+                LIST4.Remove(LIST4[i]);
+            }
+            }
+            for (int z = 0; z < miqte.Count; z++)
+            {
+                if (miqte[z].SenderId == LIST4[i].UserId || miqte[z].ReciverId == LIST4[i].UserId )
+            {
+                LIST4.Remove(LIST4[i]);
+            }
+
+            }
+
+            
+        }
+        
+        // lista e filtruar ruhet ne viewbag
+        ViewBag.perdoruesit= LIST4;
+        
         //shfaqim gjith requests
-        ViewBag.requests = _context.Requests.Where(e => e.RequestId == id).Where(e=> e.Accepted == false).ToList();
+        ViewBag.requests = _context.Requests.Include(e=>e.Reciver).Include(e=>e.Sender).Where(e => e.ReciverId == id).Where(e => e.Accepted == false).ToList();
 
         // shfaq gjith miqte
 
-        ViewBag.miqte = _context.Requests.Where(e => (e.SenderId == id) || (e.ReciverId == id)).Where(e=>e.Accepted ==true).ToList();
+        ViewBag.miqte = _context.Requests.Where(e => (e.SenderId == id) || (e.ReciverId == id)).Include(e=>e.Reciver).Include(e=>e.Sender).Where(e=>e.Accepted ==true).ToList();
         //Marr te loguarin me te dhena
         ViewBag.iLoguari = _context.Users.FirstOrDefault(e => e.UserId == id);
 
-           
+
         //Mbaron ketu pjesa me request
         ViewBag.movies = _context.Movies.Include(e => e.Creator).Include(e => e.Fansat).ThenInclude(e => e.UseriQePelqen).OrderByDescending(e => e.CreatedAt).ToList();
        
@@ -212,6 +247,9 @@ public class HomeController : Controller
           
         };
         _context.Requests.Add(newRequest);
+        _context.SaveChanges();
+        // User dbUser = _context.Users.Include(e=>e.Requests).First(e=> e.UserId == idFromSession);
+        // dbUser.Requests.Add(newRequest);
         _context.SaveChanges();
         return RedirectToAction("index");
 
